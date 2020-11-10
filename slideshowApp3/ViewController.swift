@@ -10,8 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBAction func tapAction(_ sender: Any) {
-    }
     @IBAction func unwind(_ segue: UIStoryboardSegue){
         
     }
@@ -36,8 +34,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
+        imageView.image = images[0]
         
     }
     
@@ -47,25 +44,25 @@ class ViewController: UIViewController {
     }
     
     @IBAction func backAction(_ sender: Any) {
-        if imageIndex == 0 {
-            imageIndex = 2
-        } else {
-            imageIndex -= 1
+        imageIndex -= 1
+        
+        if imageIndex < 0 {
+            imageIndex = images.count - 1
         }
         imageView.image = images[imageIndex]
     }
+        
     
     @IBAction func nextAction(_ sender: Any) {
-        imageView.image = images[0]
-        if imageIndex < 1 {
-            imageIndex += 1
-        } else if imageIndex < 2 {
-            imageIndex += 1
-        } else if imageIndex < 3 {
-            imageIndex -= 2
+        imageIndex += 1
+            
+            if imageIndex >= images.count {
+                
+                imageIndex = 0
+            }
+            
+            imageView.image = images[imageIndex]
         }
-        imageView.image = images[imageIndex]
-    }
     
     @IBAction func startStopAction(_ sender: Any) {
         if self.timer == nil {
@@ -76,16 +73,16 @@ class ViewController: UIViewController {
             Next.isEnabled = false
             
         } else {
-            if self.timer != nil {
-                self.timer.invalidate()   // タイマーを停止する
-                self.timer = nil
-                startStop.setTitle("再生", for: .normal)
-                back.isEnabled = true
-                Next.isEnabled = true
-                
-            }
+            
+            self.timer.invalidate()   // タイマーを停止する
+            self.timer = nil
+            startStop.setTitle("再生", for: .normal)
+            back.isEnabled = true
+            Next.isEnabled = true
+            
         }
     }
+    
     @objc func onTimer(_ timer: Timer) {
         if imageIndex == 2 {
             imageIndex = 0
@@ -94,7 +91,14 @@ class ViewController: UIViewController {
         }
         imageView.image = images[imageIndex]
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        self.timer.invalidate()   // タイマーを停止する
+        self.timer = nil
+        startStop.setTitle("再生", for: .normal)
+        back.isEnabled = true
+        Next.isEnabled = true
         
         let resultViewController:ResultViewController = segue.destination as! ResultViewController
         
