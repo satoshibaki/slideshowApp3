@@ -94,15 +94,25 @@ class ViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        self.timer.invalidate()   // タイマーを停止する
-        self.timer = nil
-        startStop.setTitle("再生", for: .normal)
-        back.isEnabled = true
-        Next.isEnabled = true
-        
-        let resultViewController:ResultViewController = segue.destination as! ResultViewController
-        
-        resultViewController.image = imageView.image
+        if self.timer == nil {
+            
+            let resultViewController:ResultViewController = segue.destination as! ResultViewController
+            
+            resultViewController.image = imageView.image
+            
+        }else {
+            
+            self.timer.invalidate()   // タイマーを停止する
+            self.timer = nil
+            startStop.setTitle("再生", for: .normal)
+            back.isEnabled = true
+            Next.isEnabled = true
+            
+            let resultViewController:ResultViewController = segue.destination as! ResultViewController
+            
+            resultViewController.image = imageView.image
+            
+        }
     }
 }
 
