@@ -84,23 +84,19 @@ class ViewController: UIViewController {
     }
     
     @objc func onTimer(_ timer: Timer) {
-        if imageIndex == 2 {
+        imageIndex += 1
+        
+        if imageIndex >= images.count {
+            
             imageIndex = 0
-        } else {
-            imageIndex += 1
         }
+        
         imageView.image = images[imageIndex]
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if self.timer == nil {
-            
-            let resultViewController:ResultViewController = segue.destination as! ResultViewController
-            
-            resultViewController.image = imageView.image
-            
-        }else {
+        if self.timer != nil {
             
             self.timer.invalidate()   // タイマーを停止する
             self.timer = nil
@@ -108,11 +104,11 @@ class ViewController: UIViewController {
             back.isEnabled = true
             Next.isEnabled = true
             
-            let resultViewController:ResultViewController = segue.destination as! ResultViewController
-            
-            resultViewController.image = imageView.image
-            
         }
+        
+        let resultViewController:ResultViewController = segue.destination as! ResultViewController
+        
+        resultViewController.image = imageView.image
+        
     }
 }
-
